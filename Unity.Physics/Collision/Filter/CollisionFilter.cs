@@ -46,15 +46,9 @@ namespace Unity.Physics
         {
             if (filterA.GroupIndex > 0 && filterA.GroupIndex == filterB.GroupIndex)
             {
-                return true;
+                return (filterA.BelongsTo & filterB.CollidesWith) != 0 && (filterB.BelongsTo & filterA.CollidesWith) != 0;
             }
-            if (filterA.GroupIndex < 0 && filterA.GroupIndex == filterB.GroupIndex)
-            {
-                return false;
-            }
-            return
-                (filterA.BelongsTo & filterB.CollidesWith) != 0 &&
-                (filterB.BelongsTo & filterA.CollidesWith) != 0;
+            return false;
         }
 
         // Return a union of two filters.
@@ -65,7 +59,7 @@ namespace Unity.Physics
             {
                 BelongsTo = filterA.BelongsTo | filterB.BelongsTo,
                 CollidesWith = filterA.CollidesWith | filterB.CollidesWith,
-                GroupIndex = (filterA.GroupIndex == filterB.GroupIndex) ? filterA.GroupIndex : 0
+                GroupIndex = (filterA.GroupIndex == filterB.GroupIndex) ? filterA.GroupIndex : -1
             };
         }
 
